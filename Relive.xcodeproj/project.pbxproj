@@ -1,0 +1,763 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AC6CA18D2DAF7D6600411432 /* SwiftSMTP in Frameworks */ = {isa = PBXBuildFile; productRef = AC6CA18C2DAF7D6600411432 /* SwiftSMTP */; };
+		ACF731982D96D710002BB3F9 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731972D96D710002BB3F9 /* Auth */; };
+		ACF7319A2D96D710002BB3F9 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731992D96D710002BB3F9 /* Functions */; };
+		ACF7319C2D96D710002BB3F9 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = ACF7319B2D96D710002BB3F9 /* PostgREST */; };
+		ACF7319E2D96D710002BB3F9 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = ACF7319D2D96D710002BB3F9 /* Realtime */; };
+		ACF731A02D96D710002BB3F9 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = ACF7319F2D96D710002BB3F9 /* Storage */; };
+		ACF731A22D96D710002BB3F9 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731A12D96D710002BB3F9 /* Supabase */; };
+		ACF731A42D96D726002BB3F9 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731A32D96D726002BB3F9 /* Auth */; };
+		ACF731A62D96D726002BB3F9 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731A52D96D726002BB3F9 /* Functions */; };
+		ACF731A82D96D726002BB3F9 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731A72D96D726002BB3F9 /* PostgREST */; };
+		ACF731AA2D96D726002BB3F9 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731A92D96D726002BB3F9 /* Realtime */; };
+		ACF731AC2D96D726002BB3F9 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731AB2D96D726002BB3F9 /* Storage */; };
+		ACF731AE2D96D726002BB3F9 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = ACF731AD2D96D726002BB3F9 /* Supabase */; };
+		ACF98C662D969E9800B8453F /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = ACF98C652D969E9800B8453F /* Auth */; };
+		ACF98C682D969E9800B8453F /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = ACF98C672D969E9800B8453F /* Functions */; };
+		ACF98C6A2D969E9800B8453F /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = ACF98C692D969E9800B8453F /* PostgREST */; };
+		ACF98C6C2D969E9800B8453F /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = ACF98C6B2D969E9800B8453F /* Realtime */; };
+		ACF98C6E2D969E9800B8453F /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = ACF98C6D2D969E9800B8453F /* Storage */; };
+		ACF98C702D969E9800B8453F /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = ACF98C6F2D969E9800B8453F /* Supabase */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D90F5C42CFA4F3E004E998F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D90F5A52CFA4F3D004E998F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D90F5AC2CFA4F3D004E998F;
+			remoteInfo = Relive;
+		};
+		1D90F5CE2CFA4F3E004E998F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D90F5A52CFA4F3D004E998F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D90F5AC2CFA4F3D004E998F;
+			remoteInfo = Relive;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1D90F5AD2CFA4F3D004E998F /* Relive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Relive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D90F5C32CFA4F3E004E998F /* ReliveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReliveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D90F5CD2CFA4F3E004E998F /* ReliveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReliveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AC98D5742DA872D000C896F3 /* Exceptions for "Relive" folder in "Relive" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1D90F5AC2CFA4F3D004E998F /* Relive */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1D90F5AF2CFA4F3D004E998F /* Relive */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AC98D5742DA872D000C896F3 /* Exceptions for "Relive" folder in "Relive" target */,
+			);
+			path = Relive;
+			sourceTree = "<group>";
+		};
+		1D90F5C62CFA4F3E004E998F /* ReliveTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ReliveTests;
+			sourceTree = "<group>";
+		};
+		1D90F5D02CFA4F3E004E998F /* ReliveUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ReliveUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D90F5AA2CFA4F3D004E998F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACF98C6A2D969E9800B8453F /* PostgREST in Frameworks */,
+				ACF98C682D969E9800B8453F /* Functions in Frameworks */,
+				ACF98C702D969E9800B8453F /* Supabase in Frameworks */,
+				ACF98C662D969E9800B8453F /* Auth in Frameworks */,
+				ACF98C6E2D969E9800B8453F /* Storage in Frameworks */,
+				AC6CA18D2DAF7D6600411432 /* SwiftSMTP in Frameworks */,
+				ACF98C6C2D969E9800B8453F /* Realtime in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D90F5C02CFA4F3E004E998F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACF7319C2D96D710002BB3F9 /* PostgREST in Frameworks */,
+				ACF7319A2D96D710002BB3F9 /* Functions in Frameworks */,
+				ACF731A22D96D710002BB3F9 /* Supabase in Frameworks */,
+				ACF731982D96D710002BB3F9 /* Auth in Frameworks */,
+				ACF731A02D96D710002BB3F9 /* Storage in Frameworks */,
+				ACF7319E2D96D710002BB3F9 /* Realtime in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D90F5CA2CFA4F3E004E998F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACF731A82D96D726002BB3F9 /* PostgREST in Frameworks */,
+				ACF731A62D96D726002BB3F9 /* Functions in Frameworks */,
+				ACF731AE2D96D726002BB3F9 /* Supabase in Frameworks */,
+				ACF731A42D96D726002BB3F9 /* Auth in Frameworks */,
+				ACF731AC2D96D726002BB3F9 /* Storage in Frameworks */,
+				ACF731AA2D96D726002BB3F9 /* Realtime in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1D90F5A42CFA4F3D004E998F = {
+			isa = PBXGroup;
+			children = (
+				1D90F5AF2CFA4F3D004E998F /* Relive */,
+				1D90F5C62CFA4F3E004E998F /* ReliveTests */,
+				1D90F5D02CFA4F3E004E998F /* ReliveUITests */,
+				1D90F5AE2CFA4F3D004E998F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1D90F5AE2CFA4F3D004E998F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D90F5AD2CFA4F3D004E998F /* Relive.app */,
+				1D90F5C32CFA4F3E004E998F /* ReliveTests.xctest */,
+				1D90F5CD2CFA4F3E004E998F /* ReliveUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D90F5AC2CFA4F3D004E998F /* Relive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D90F5D62CFA4F3E004E998F /* Build configuration list for PBXNativeTarget "Relive" */;
+			buildPhases = (
+				1D90F5A92CFA4F3D004E998F /* Sources */,
+				1D90F5AA2CFA4F3D004E998F /* Frameworks */,
+				1D90F5AB2CFA4F3D004E998F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1D90F5AF2CFA4F3D004E998F /* Relive */,
+			);
+			name = Relive;
+			packageProductDependencies = (
+				ACF98C652D969E9800B8453F /* Auth */,
+				ACF98C672D969E9800B8453F /* Functions */,
+				ACF98C692D969E9800B8453F /* PostgREST */,
+				ACF98C6B2D969E9800B8453F /* Realtime */,
+				ACF98C6D2D969E9800B8453F /* Storage */,
+				ACF98C6F2D969E9800B8453F /* Supabase */,
+				AC6CA18C2DAF7D6600411432 /* SwiftSMTP */,
+			);
+			productName = Relive;
+			productReference = 1D90F5AD2CFA4F3D004E998F /* Relive.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1D90F5C22CFA4F3E004E998F /* ReliveTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D90F5DB2CFA4F3E004E998F /* Build configuration list for PBXNativeTarget "ReliveTests" */;
+			buildPhases = (
+				1D90F5BF2CFA4F3E004E998F /* Sources */,
+				1D90F5C02CFA4F3E004E998F /* Frameworks */,
+				1D90F5C12CFA4F3E004E998F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1D90F5C52CFA4F3E004E998F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1D90F5C62CFA4F3E004E998F /* ReliveTests */,
+			);
+			name = ReliveTests;
+			packageProductDependencies = (
+				ACF731972D96D710002BB3F9 /* Auth */,
+				ACF731992D96D710002BB3F9 /* Functions */,
+				ACF7319B2D96D710002BB3F9 /* PostgREST */,
+				ACF7319D2D96D710002BB3F9 /* Realtime */,
+				ACF7319F2D96D710002BB3F9 /* Storage */,
+				ACF731A12D96D710002BB3F9 /* Supabase */,
+			);
+			productName = ReliveTests;
+			productReference = 1D90F5C32CFA4F3E004E998F /* ReliveTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1D90F5CC2CFA4F3E004E998F /* ReliveUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D90F5DE2CFA4F3E004E998F /* Build configuration list for PBXNativeTarget "ReliveUITests" */;
+			buildPhases = (
+				1D90F5C92CFA4F3E004E998F /* Sources */,
+				1D90F5CA2CFA4F3E004E998F /* Frameworks */,
+				1D90F5CB2CFA4F3E004E998F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1D90F5CF2CFA4F3E004E998F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1D90F5D02CFA4F3E004E998F /* ReliveUITests */,
+			);
+			name = ReliveUITests;
+			packageProductDependencies = (
+				ACF731A32D96D726002BB3F9 /* Auth */,
+				ACF731A52D96D726002BB3F9 /* Functions */,
+				ACF731A72D96D726002BB3F9 /* PostgREST */,
+				ACF731A92D96D726002BB3F9 /* Realtime */,
+				ACF731AB2D96D726002BB3F9 /* Storage */,
+				ACF731AD2D96D726002BB3F9 /* Supabase */,
+			);
+			productName = ReliveUITests;
+			productReference = 1D90F5CD2CFA4F3E004E998F /* ReliveUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1D90F5A52CFA4F3D004E998F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					1D90F5AC2CFA4F3D004E998F = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					1D90F5C22CFA4F3E004E998F = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 1D90F5AC2CFA4F3D004E998F;
+					};
+					1D90F5CC2CFA4F3E004E998F = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 1D90F5AC2CFA4F3D004E998F;
+					};
+				};
+			};
+			buildConfigurationList = 1D90F5A82CFA4F3D004E998F /* Build configuration list for PBXProject "Relive" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1D90F5A42CFA4F3D004E998F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				AC6CA18B2DAF7D6600411432 /* XCRemoteSwiftPackageReference "Swift-SMTP" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1D90F5AE2CFA4F3D004E998F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D90F5AC2CFA4F3D004E998F /* Relive */,
+				1D90F5C22CFA4F3E004E998F /* ReliveTests */,
+				1D90F5CC2CFA4F3E004E998F /* ReliveUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D90F5AB2CFA4F3D004E998F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D90F5C12CFA4F3E004E998F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D90F5CB2CFA4F3E004E998F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D90F5A92CFA4F3D004E998F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D90F5BF2CFA4F3E004E998F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D90F5C92CFA4F3E004E998F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1D90F5C52CFA4F3E004E998F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D90F5AC2CFA4F3D004E998F /* Relive */;
+			targetProxy = 1D90F5C42CFA4F3E004E998F /* PBXContainerItemProxy */;
+		};
+		1D90F5CF2CFA4F3E004E998F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D90F5AC2CFA4F3D004E998F /* Relive */;
+			targetProxy = 1D90F5CE2CFA4F3E004E998F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1D90F5D72CFA4F3E004E998F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z2M2DPBAPV;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Relive/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"This app needs camera access to capture your profile photo for registration.\"";
+				INFOPLIST_KEY_NSContactsUsageDescription = "\"This app needs access to your contacts to find friends using the app\"";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "\"We need your location for app functionality\"";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "\"for providing personlized services\"";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"We need your location to save photo locations\"";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"We need access to your photos to display them in the app\"";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.amn.Relive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1D90F5D82CFA4F3E004E998F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z2M2DPBAPV;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Relive/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"This app needs camera access to capture your profile photo for registration.\"";
+				INFOPLIST_KEY_NSContactsUsageDescription = "\"This app needs access to your contacts to find friends using the app\"";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "\"We need your location for app functionality\"";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "\"for providing personlized services\"";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"We need your location to save photo locations\"";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"We need access to your photos to display them in the app\"";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aman.Relive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1D90F5D92CFA4F3E004E998F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1D90F5DA2CFA4F3E004E998F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1D90F5DC2CFA4F3E004E998F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nimiwal.io.ReliveTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Relive.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Relive";
+			};
+			name = Debug;
+		};
+		1D90F5DD2CFA4F3E004E998F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nimiwal.io.ReliveTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Relive.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Relive";
+			};
+			name = Release;
+		};
+		1D90F5DF2CFA4F3E004E998F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nimiwal.io.ReliveUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Relive;
+			};
+			name = Debug;
+		};
+		1D90F5E02CFA4F3E004E998F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nimiwal.io.ReliveUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Relive;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D90F5A82CFA4F3D004E998F /* Build configuration list for PBXProject "Relive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D90F5D92CFA4F3E004E998F /* Debug */,
+				1D90F5DA2CFA4F3E004E998F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1D90F5D62CFA4F3E004E998F /* Build configuration list for PBXNativeTarget "Relive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D90F5D72CFA4F3E004E998F /* Debug */,
+				1D90F5D82CFA4F3E004E998F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1D90F5DB2CFA4F3E004E998F /* Build configuration list for PBXNativeTarget "ReliveTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D90F5DC2CFA4F3E004E998F /* Debug */,
+				1D90F5DD2CFA4F3E004E998F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1D90F5DE2CFA4F3E004E998F /* Build configuration list for PBXNativeTarget "ReliveUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D90F5DF2CFA4F3E004E998F /* Debug */,
+				1D90F5E02CFA4F3E004E998F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AC6CA18B2DAF7D6600411432 /* XCRemoteSwiftPackageReference "Swift-SMTP" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kitura/Swift-SMTP.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AC6CA18C2DAF7D6600411432 /* SwiftSMTP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AC6CA18B2DAF7D6600411432 /* XCRemoteSwiftPackageReference "Swift-SMTP" */;
+			productName = SwiftSMTP;
+		};
+		ACF731972D96D710002BB3F9 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		ACF731992D96D710002BB3F9 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		ACF7319B2D96D710002BB3F9 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		ACF7319D2D96D710002BB3F9 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		ACF7319F2D96D710002BB3F9 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		ACF731A12D96D710002BB3F9 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		ACF731A32D96D726002BB3F9 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		ACF731A52D96D726002BB3F9 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		ACF731A72D96D726002BB3F9 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		ACF731A92D96D726002BB3F9 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		ACF731AB2D96D726002BB3F9 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		ACF731AD2D96D726002BB3F9 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		ACF98C652D969E9800B8453F /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		ACF98C672D969E9800B8453F /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		ACF98C692D969E9800B8453F /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		ACF98C6B2D969E9800B8453F /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		ACF98C6D2D969E9800B8453F /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		ACF98C6F2D969E9800B8453F /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACF98C642D969E9800B8453F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1D90F5A52CFA4F3D004E998F /* Project object */;
+}
