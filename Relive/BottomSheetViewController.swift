@@ -10,92 +10,247 @@ class CircularImageView: UIImageView {
 }
 
 class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
-    
+    private var initialViewYPosition: CGFloat = 0
     @IBOutlet weak var profileImage: UIImageView!
-    
     @IBOutlet weak var name: UILabel!
-    
     @IBOutlet weak var nameField: UITextField!
-    
     @IBOutlet weak var locationSwitch: UISwitch!
-    
     @IBOutlet weak var editName: UIButton!
-        
+    @IBOutlet weak var cancelButton: UIButton!
     
     private var isEditingName: Bool = false
-    
     private let locationManager = CLLocationManager()
-    
-    // Create a circular image view to replace the existing one
     private var circularProfileImage: CircularImageView?
-    
-    // Loading indicator
     private var loadingIndicator: UIActivityIndicatorView?
+    private var dimmingView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        modalPresentationStyle = .overCurrentContext
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
-        
-        // Hide the top name label
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+              
         name.isHidden = true
-        
-        // Setup user data
         let userId = SessionManager.shared.getUserId()
         print("BottomSheetViewController loading for user: \(userId ?? "nil")")
         
-        // Initialize circular profile image
         setupCircularProfileImage()
-        
-        // Show loading indicator while fetching profile
         showLoadingOnImageView()
         
-        // Try to get user from local data first
+        if let cancelButton = cancelButton {
+            cancelButton.setTitle("Delete Account", for: .normal)
+            cancelButton.setTitleColor(.systemRed, for: .normal)
+            print("Cancel button configured successfully")
+        } else {
+            print("Error: cancelButton outlet is nil")
+        }
+        
         if let userId = userId {
-            // Check if we can get the user from local data
             if let localUser = UserDataModel.shared.getUserById(userId: userId) {
-                // Update UI with available local data
                 print("Local user data found: \(localUser.name)")
                 locationSwitch.isOn = localUser.shareLocation ?? false
                 nameField.text = localUser.name
                 nameField.isUserInteractionEnabled = false
                 
-                // Display local image if available
                 if let profileImageData = localUser.profileImages.first,
                    let image = UIImage(data: profileImageData) {
-                    // Set the image on our circular image view
                     circularProfileImage?.image = image
                     hideLoadingIndicator()
                     print("Loaded profile image from local data")
                 } else if let profileImageUrl = localUser.profileImageUrl, !profileImageUrl.isEmpty {
-                    // Try to load from URL
                     loadImageFromUrl(profileImageUrl)
                 } else {
-                    // No image available
                     circularProfileImage?.image = UIImage(systemName: "person.circle.fill")
                     hideLoadingIndicator()
                     print("Using placeholder image - no profile image found")
                 }
                 
-                // Fetch updated user profile from Supabase including profile image
                 fetchUserProfile(userId: userId)
             } else {
                 print("User found in session but not in local data model")
-                // Show placeholder
                 circularProfileImage?.image = UIImage(systemName: "person.circle.fill")
                 hideLoadingIndicator()
-                
-                // Try to fetch from Supabase
                 fetchUserProfile(userId: userId)
             }
         } else {
             print("No user ID found in session")
-            // Show placeholder
             circularProfileImage?.image = UIImage(systemName: "person.circle.fill")
             hideLoadingIndicator()
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupDimmingView()
+        DispatchQueue.main.async {
+            self.initialViewYPosition = self.view.frame.origin.y
+            print("Initial view Y position: \(self.initialViewYPosition)")
+        }
+    }
+    
+    @objc private func handleBackgroundTap(_ recognizer: UITapGestureRecognizer) {
+        let location = recognizer.location(in: view)
+        
+        // Check if the tap was outside the content area (assuming your content is in a container view)
+        if !view.bounds.contains(location) || location.y < view.bounds.height * 0.2 {
+            let currentLocationSharingState = locationSwitch.isOn
+            dismiss(animated: true) {
+                print("Bottom sheet dismissed")
+                if currentLocationSharingState {
+                    self.checkLocationPermission()
+                }
+            }
+        }
+    }
+    
+    // Modify your setupDimmingView method
+    private func setupDimmingView() {
+        // Remove any existing dimming view first
+        dimmingView?.removeFromSuperview()
+        dimmingView = nil
+        
+        // Create new dimming view
+        dimmingView = UIView(frame: UIScreen.main.bounds)
+        dimmingView?.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        dimmingView?.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Make sure we have the right parent view
+        if let presentingViewController = presentingViewController,
+           let parentView = presentingViewController.view {
+            parentView.addSubview(dimmingView!)
+            parentView.bringSubviewToFront(self.view)
+            
+            NSLayoutConstraint.activate([
+                dimmingView!.topAnchor.constraint(equalTo: parentView.topAnchor),
+                dimmingView!.bottomAnchor.constraint(equalTo: parentView.bottomAnchor),
+                dimmingView!.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+                dimmingView!.trailingAnchor.constraint(equalTo: parentView.trailingAnchor)
+            ])
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDimmingViewTap(_:)))
+            dimmingView!.addGestureRecognizer(tapGesture)
+            print("Dimming view and tap gesture added")
+        } else {
+            print("Error: Could not find presenting view controller")
+        }
+    }
+    
+    @objc private func handleDimmingViewTap(_ gesture: UITapGestureRecognizer) {
+        print("Dimming view tapped")
+        let currentLocationSharingState = locationSwitch.isOn
+        dismiss(animated: true) { [weak self] in
+            print("Bottom sheet dismissed")
+            self?.locationSwitch.setOn(currentLocationSharingState, animated: false)
+            if currentLocationSharingState {
+                self?.checkLocationPermission()
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dimmingView?.removeFromSuperview()
+        dimmingView = nil
+        print("Dimming view removed")
+    }
+    
+    @IBAction func cancelButton(_ sender: Any) {
+        let alert = UIAlertController(
+            title: "Delete Account",
+            message: "Are you sure you want to delete your account? This action cannot be undone.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.performAccountDeletion()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func performAccountDeletion() {
+        guard let userId = SessionManager.shared.getUserId() else {
+            print("No user ID found for deletion")
+            showAlert(message: "Unable to delete account. Please try again.")
+            return
+        }
 
+        showLoadingIndicatorOnView()
+
+        SupabaseManager.shared.deleteUser(userId: userId) { [weak self] result in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                self.hideLoadingIndicator()
+
+                switch result {
+                case .success:
+                    // Clear local data
+                    UserDataModel.shared.removeUser(byId: userId)
+                    SessionManager.shared.removeSession()
+                    SupabaseManager.shared.clearLocalUserData()
+
+                    // Show confirmation and redirect to registration
+                    let alert = UIAlertController(
+                        title: "Account Deleted",
+                        message: "Your account has been successfully deleted. You can register again to create a new account.",
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc = storyboard.instantiateViewController(withIdentifier: "initialNavigation") as! UINavigationController
+                        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                            let window = sceneDelegate.window
+                            window?.rootViewController = vc
+                            UIView.transition(with: window!, duration: 0.3, options: [.transitionCurlUp], animations: nil)
+                        }
+                    })
+                    self.present(alert, animated: true)
+
+                case .failure(let error):
+                    print("Failed to delete user: \(error.localizedDescription)")
+                    let message: String
+                    if error.localizedDescription.contains("User not found") {
+                        message = "Account not found. It may have already been deleted."
+                    } else if error.localizedDescription.contains("Forbidden") {
+                        message = "You are not authorized to delete this account."
+                    } else if error.localizedDescription.contains("Network") {
+                        message = "Network error. Please check your connection and try again."
+                    } else {
+                        message = "Failed to delete account: \(error.localizedDescription)"
+                    }
+                    self.showAlert(message: message)
+                }
+            }
+        }
+    }
+    
+    private func showLoadingIndicatorOnView() {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .gray
+        indicator.startAnimating()
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(indicator)
+        
+        NSLayoutConstraint.activate([
+            indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        loadingIndicator = indicator
+        view.isUserInteractionEnabled = false
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
     private func loadImageFromUrl(_ urlString: String) {
         print("Attempting to load image from URL: \(urlString)")
         guard let url = URL(string: urlString) else {
@@ -129,9 +284,7 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
                     self.circularProfileImage?.image = image
                     self.hideLoadingIndicator()
                     
-                    // Save image data to user model
                     if let userId = SessionManager.shared.getUserId() {
-                        // Check if the user exists in the data model
                         if var user = UserDataModel.shared.getUserById(userId: userId) {
                             user.profileImages = [imageData]
                             UserDataModel.shared.updateUser(user)
@@ -158,11 +311,9 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
                 switch result {
                 case .success(let user):
                     print("Successfully fetched user profile: \(user.name)")
-                    // Update UI with fetched data
                     self.nameField.text = user.name
                     self.locationSwitch.isOn = user.shareLocation
                     
-                    // Check if we need to load profile image
                     if let profileImageUrl = user.profileImageUrl, !profileImageUrl.isEmpty {
                         if self.circularProfileImage?.image == nil || self.circularProfileImage?.image == UIImage(systemName: "person.circle.fill") {
                             print("Loading profile image from URL: \(profileImageUrl)")
@@ -172,7 +323,6 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
                     
                 case .failure(let error):
                     print("Failed to fetch user profile: \(error.localizedDescription)")
-                    // No need to show an error message as we're using local data as fallback
                 }
             }
         }
@@ -181,12 +331,10 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
     private func showLoadingOnImageView() {
         guard let circularView = circularProfileImage else { return }
         
-        // Create loading indicator
         let indicator = UIActivityIndicatorView(style: .medium)
         indicator.color = .gray
         indicator.startAnimating()
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        
         circularView.addSubview(indicator)
         
         NSLayoutConstraint.activate([
@@ -195,8 +343,6 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
         ])
         
         loadingIndicator = indicator
-        
-        // Add semi-transparent background
         circularView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
     }
     
@@ -204,40 +350,28 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
         loadingIndicator?.removeFromSuperview()
         loadingIndicator = nil
         circularProfileImage?.backgroundColor = .clear
+        view.isUserInteractionEnabled = true
     }
     
     private func setupCircularProfileImage() {
-        // Check if we have the original image view
         guard let superview = profileImage.superview else { return }
         
-        // Create our custom circular image view
         let circularView = CircularImageView(frame: CGRect.zero)
         circularView.contentMode = .scaleAspectFill
         circularView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Copy image and background color
         circularView.image = profileImage.image
         circularView.backgroundColor = profileImage.backgroundColor
         
-        // Add border
         circularView.layer.borderWidth = 2
         circularView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
         
-        // Add to superview
         superview.addSubview(circularView)
         
-        // Get original position constraints
-        let originalY = profileImage.frame.origin.y
-        
-        // Force a 1:1 aspect ratio with fixed size
         let widthConstraint = circularView.widthAnchor.constraint(equalToConstant: 150)
         let heightConstraint = circularView.heightAnchor.constraint(equalToConstant: 150)
         let centerXConstraint = circularView.centerXAnchor.constraint(equalTo: superview.centerXAnchor)
-        
-        // Use top constraint relative to superview instead of the original image
         let topConstraint = circularView.topAnchor.constraint(equalTo: superview.topAnchor, constant: 30)
         
-        // Activate constraints
         NSLayoutConstraint.activate([
             widthConstraint,
             heightConstraint,
@@ -245,57 +379,33 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             topConstraint
         ])
         
-        // Store reference and hide original
         circularProfileImage = circularView
         profileImage.isHidden = true
-        
-        // Force layout
         view.layoutIfNeeded()
     }
     
-    @IBAction func cancelButton(_ sender: Any) {
-        // Capture the current location sharing state
-        let currentLocationSharingState = locationSwitch.isOn
-        
-        dismiss(animated: true) { [weak self] in
-            // Ensure the location switch remains in its current state
-            self?.locationSwitch.setOn(currentLocationSharingState, animated: false)
-            
-            // If location sharing was on, ensure it remains active
-            if currentLocationSharingState {
-                self?.checkLocationPermission()
-            }
-        }
-    }
     @IBAction func allowLocation(_ sender: UISwitch) {
         if sender.isOn {
-            //Set state of toggle to true, send this value to data model
             checkLocationPermission()
         } else {
-            // Handle disabling location sharing
-            //Set state of toggle to false, send this value to data model
             disableLocationSharing()
         }
     }
-
+    
     private func disableLocationSharing() {
         guard let userId = SessionManager.shared.getUserId() else {
             print("No user ID found for updating location sharing")
             return
         }
         
-        // Check if user exists in the data model
         if var user = UserDataModel.shared.getUserById(userId: userId) {
             user.shareLocation = false
             user.location = nil
             UserDataModel.shared.updateUser(user)
             print("Updated local user to disable location sharing")
-            
-            // Also update location sharing setting in Supabase
             updateLocationSharingInSupabase(userId: userId, isSharing: false)
         }
     }
-    
     
     @IBAction func editButton(_ sender: Any) {
         isEditingName.toggle()
@@ -305,7 +415,7 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             nameField.becomeFirstResponder()
             editName.setTitle("Done", for: .normal)
         } else {
-            nameField.resignFirstResponder() // Dismiss the keyboard
+            nameField.resignFirstResponder()
             guard let nameText = nameField.text, !nameText.isEmpty else { return }
             
             guard let userId = SessionManager.shared.getUserId() else {
@@ -313,13 +423,10 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
                 return
             }
             
-            // Check if user exists in the data model
             if var user = UserDataModel.shared.getUserById(userId: userId) {
                 user.name = nameText
                 UserDataModel.shared.updateUser(user)
                 print("Updated local user name to: \(nameText)")
-                
-                // Also update the name in Supabase
                 updateUserNameInSupabase(userId: userId, name: nameText)
             }
             
@@ -328,12 +435,10 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     private func updateUserNameInSupabase(userId: String, name: String) {
-        // Show small loading indicator in the edit button
         let originalTitle = editName.title(for: .normal)
         editName.setTitle("Saving...", for: .normal)
         editName.isEnabled = false
         
-        // Create a custom method in SupabaseManager to update the user's name
         SupabaseManager.shared.updateUserName(userId: userId, name: name) { [weak self] success in
             guard let self = self else { return }
             
@@ -350,15 +455,11 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
     @IBAction func logout(_ sender: Any) {
-        // First try to sign out from Supabase
         SupabaseManager.shared.signOut { [weak self] success in
             guard let self = self else { return }
             
             print("Supabase sign out result: \(success ? "success" : "failed")")
-            
-            // Whether Supabase sign out succeeds or fails, we'll still clear the local session
             SessionManager.shared.removeSession()
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -366,15 +467,12 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                 let window = sceneDelegate.window
                 window?.rootViewController = vc
-                UIView.transition(with: window!, duration: 0.3, options: [.transitionCurlUp], animations: nil, completion: nil)
+                UIView.transition(with: window!, duration: 0.3, options: [.transitionCurlUp], animations: nil)
             }
         }
     }
     
-    
-    
     private func updateLocationSharingInSupabase(userId: String, isSharing: Bool) {
-        // Create a custom method in SupabaseManager to update the user's location sharing
         SupabaseManager.shared.updateLocationSharing(userId: userId, isSharing: isSharing) { success in
             if success {
                 print("Successfully updated location sharing in Supabase")
@@ -402,7 +500,7 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             fatalError("Unknown authorization status")
         }
     }
-
+    
     func showSettingsAlert() {
         let alertController = UIAlertController(
             title: "Location Permission Needed",
@@ -411,7 +509,6 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
         )
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak self] _ in
-            // Ensure the switch reflects the previous state
             self?.locationSwitch.setOn(false, animated: true)
         }))
         
@@ -421,10 +518,9 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             }
         })
         
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true)
     }
-
-    // Handle user's response to permission request
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
@@ -453,8 +549,7 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             locationSwitch.setOn(false, animated: true)
         }
     }
-
-    // CLLocationManager delegate method to handle location updates
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         
@@ -465,15 +560,12 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
         
         print("Received location update: \(location.coordinate.latitude), \(location.coordinate.longitude)")
         
-        // Check if user exists in the data model
         if var user = UserDataModel.shared.getUserById(userId: userId) {
             user.shareLocation = true
             let l = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
             user.location = LocationCoordinate(location: l)
             UserDataModel.shared.updateUser(user)
             print("Updated local user with location")
-            
-            // Also update location data in Supabase
             updateLocationInSupabase(userId: userId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         }
         
@@ -481,7 +573,6 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     private func updateLocationInSupabase(userId: String, latitude: Double, longitude: Double) {
-        // Create a custom method in SupabaseManager to update the user's location
         SupabaseManager.shared.updateUserLocation(userId: userId, latitude: latitude, longitude: longitude) { success in
             if success {
                 print("Successfully updated location in Supabase")
@@ -490,13 +581,11 @@ class BottomSheetViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-
-    // Handle error in case of failure to get location
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to get location: \(error.localizedDescription)")
         DispatchQueue.main.async {
             self.locationSwitch.setOn(false, animated: true)
         }
     }
-    
 }

@@ -102,6 +102,7 @@ class SupabaseManager {
     private init() {
         let supabaseUrl = URL(string: "https://nilixltrfenhakxbigve.supabase.co")!
         let supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pbGl4bHRyZmVuaGFreGJpZ3ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMxNTgzMjgsImV4cCI6MjA1ODczNDMyOH0.ecVr2WxpezDXnbrUXji8r3NrWZjBk6oOR5FuokDHSWU"
+        let supabaseServiceKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pbGl4bHRyZmVuaGFreGJpZ3ZlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzE1ODMyOCwiZXhwIjoyMDU4NzM0MzI4fQ.OkOg1Y8Tzd7Sq4vUosaNn40l3DwEg34y3-4kGzxkl1w"
 
         self.supabase = SupabaseClient(supabaseURL: supabaseUrl, supabaseKey: supabaseKey)
         
@@ -1646,6 +1647,104 @@ extension SupabaseManager {
             throw error
         }
     }
+    func deleteUser(userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        Task {
+            do {
+                print("Attempting to delete user with ID: \(userId)")
+
+                // Validate userId format
+                guard UUID(uuidString: userId) != nil else {
+                    print("Invalid UUID format for userId: \(userId)")
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "SupabaseManager", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid UUID format"])))
+                    }
+                    return
+                }
+
+                // Create admin client with service role key
+                let supabaseUrl = URL(string: "https://nilixltrfenhakxbigve.supabase.co")!
+                let supabaseServiceKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pbGl4bHRyZmVuaGFreGJpZ3ZlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzE1ODMyOCwiZXhwIjoyMDU4NzM0MzI4fQ.OkOg1Y8Tzd7Sq4vUosaNn40l3DwEg34y3-4kGzxkl1w"
+                let adminSupabase = SupabaseClient(supabaseURL: supabaseUrl, supabaseKey: supabaseServiceKey)
+
+                // Delete related data from database tables
+                // 1. Delete from shared_albums where user is the creator (to satisfy foreign key constraint)
+                try await adminSupabase.database
+                    .from("shared_albums")
+                    .delete()
+                    .eq("created_by_user_id", value: userId)
+                    .execute()
+                print("Deleted user-created albums from shared_albums")
+
+                // 2. Delete from users table (now safe because no dependent records in shared_albums)
+                try await adminSupabase.database
+                    .from("users")
+                    .delete()
+                    .eq("user_id", value: userId)
+                    .execute()
+                print("Deleted user from users table")
+
+                // 3. Delete from images where user is the capturer
+                try await adminSupabase.database
+                    .from("images")
+                    .delete()
+                    .eq("captured_by_user_id", value: userId)
+                    .execute()
+                print("Deleted user-captured images from images")
+
+                // 4. Delete from location_sharing
+                try await adminSupabase.database
+                    .from("location_sharing")
+                    .delete()
+                    .eq("user_id", value: userId)
+                    .execute()
+                print("Deleted user from location_sharing")
+
+                // 5. Delete from notifications
+                try await adminSupabase.database
+                    .from("notifications")
+                    .delete()
+                    .eq("user_id", value: userId)
+                    .execute()
+                print("Deleted notifications for user")
+
+                // 6. Delete profile images from storage
+                let profileImagesPath = "\(userId)/"
+                try await adminSupabase.storage
+                    .from(profileImageBucket)
+                    .remove(paths: [profileImagesPath])
+                print("Deleted profile images from storage")
+
+                // 7. Delete album images from storage
+                let albumImagesPath = "\(userId)/"
+                try await adminSupabase.storage
+                    .from(albumImagesBucket)
+                    .remove(paths: [profileImagesPath])
+                print("Deleted album images from storage")
+
+                // 8. Delete user from auth.users
+                try await adminSupabase.auth.admin.deleteUser(id: userId)
+                print("Deleted user from auth.users")
+
+                // 9. Sign out to invalidate the session
+                do {
+                    try await supabase.auth.signOut()
+                    print("Successfully signed out from Supabase")
+                } catch {
+                    print("Error signing out (continuing): \(error.localizedDescription)")
+                }
+
+                DispatchQueue.main.async {
+                    completion(.success(()))
+                }
+            } catch {
+                print("Error deleting user: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
     
     
         

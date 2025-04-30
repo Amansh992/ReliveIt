@@ -666,6 +666,28 @@ class UserDataModel {
         
         return true
     }
+    func removeUser(byId userId: String) -> Bool {
+        // Find the index of the user with a case-insensitive match
+        if let index = users.firstIndex(where: { $0.userId.lowercased() == userId.lowercased() }) {
+            // Remove the user from the array
+            users.remove(at: index)
+            print("🗑️ UserDataModel: Removed user with ID \(userId)")
+            
+            // Optional: Sync with Supabase in the background
+            // DispatchQueue.global(qos: .background).async {
+            //     SupabaseManager.shared.deleteUser(userId: userId) { result in
+            //         if case .failure(let error) = result {
+            //             print("❌ UserDataModel: Failed to sync user deletion with Supabase: \(error)")
+            //         }
+            //     }
+            // }
+            
+            return true
+        } else {
+            print("⚠️ UserDataModel: User with ID \(userId) not found")
+            return false
+        }
+    }
     
     // Clear all data (for testing)
     func clearAllData() {
@@ -1117,21 +1139,34 @@ class NotificationDataModel {
     func reloadIfNeeded() {
         updateNotifications()
         
-        if !isDataLoaded || notifications.isEmpty {
-            Task {
-                await fetchNotificationsFromSupabase()
-                if notifications.isEmpty {
-                    let sampleData = SampleData.createSampleData()
-                    self.notifications = sampleData.notifications
-                }
-                isDataLoaded = true
-                print("🔄 NotificationDataModel: Data reloaded with \(notifications.count) notifications")
+        // Early return if data is already loaded and notifications are not empty
+        guard !isDataLoaded || notifications.isEmpty else {
+            if let userId = SessionManager.shared.getSession() {
+                let userNotifications = getNotificationsByUserId(userId: userId).count
+                print("🔄 NotificationDataModel: Data reloaded for user \(userId) with \(userNotifications) notifications")
             }
+            return
         }
         
-        if let userId = SessionManager.shared.getSession() {
-            let userNotifications = getNotificationsByUserId(userId: userId).count
-            print("🔄 NotificationDataModel: Data reloaded for user \(userId) with \(userNotifications) notifications")
+        Task { @MainActor in
+            // Fetch notifications from Supabase
+            await fetchNotificationsFromSupabase()
+            
+            // Ensure notifications is updated safely
+            if notifications.isEmpty {
+                let sampleData = SampleData.createSampleData()
+                notifications = sampleData.notifications
+            }
+            
+            // Update state on the main thread
+            isDataLoaded = true
+            print("🔄 NotificationDataModel: Data reloaded with \(notifications.count) notifications")
+            
+            // Perform user-specific notification count after data is loaded
+            if let userId = SessionManager.shared.getSession() {
+                let userNotifications = getNotificationsByUserId(userId: userId).count
+                print("🔄 NotificationDataModel: Data reloaded for user \(userId) with \(userNotifications) notifications")
+            }
         }
     }
     

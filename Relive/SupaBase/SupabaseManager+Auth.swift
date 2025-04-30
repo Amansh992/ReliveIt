@@ -66,7 +66,7 @@ extension SupabaseManager {
     }
 
     // Helper method to clear all local user data
-    private func clearLocalUserData() {
+    public func clearLocalUserData() {
         UserDataModel.shared.clearAllData()
         ImageDataModel.shared.clearAllData()
         SharedAlbumsDataModel.shared.clearAllData()
@@ -159,7 +159,27 @@ extension SupabaseManager {
                 let normalizedEmail = email.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
                 print("Attempting to verify OTP: \(otp) for email: \(normalizedEmail) at \(Date())")
                 
-                // Try to verify with email type
+                // Create admin Supabase client to check auth.users with service_role key
+                let supabaseUrl = URL(string: "https://nilixltrfenhakxbigve.supabase.co")!
+                let supabaseServiceKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pbGl4bHRyZmVuaGFreGJpZ3ZlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzE1ODMyOCwiZXhwIjoyMDU4NzM0MzI4fQ.OkOg1Y8Tzd7Sq4vUosaNn40l3DwEg34y3-4kGzxkl1w"
+                let adminSupabase = SupabaseClient(supabaseURL: supabaseUrl, supabaseKey: supabaseServiceKey)
+                
+                // Check if email already exists in auth.users
+                do {
+                    let authUsersResponse = try await adminSupabase.auth.admin.listUsers()
+                    if authUsersResponse.users.contains(where: { $0.email == normalizedEmail }) {
+                        throw NSError(
+                            domain: "OTPVerification",
+                            code: 403,
+                            userInfo: [NSLocalizedDescriptionKey: "An account with this email already exists or was recently deleted. Please use a different email or contact support."]
+                        )
+                    }
+                } catch {
+                    print("Error checking auth.users: \(error.localizedDescription). Proceeding with OTP verification.")
+                    // Continue even if auth.users check fails, as it's a safeguard
+                }
+                
+                // Try to verify with email type using the supabase client (uses anon key)
                 let session = try await supabase.auth.verifyOTP(
                     email: normalizedEmail,
                     token: otp,
@@ -185,10 +205,18 @@ extension SupabaseManager {
                 let userName = name ?? (metadata["name"]?.stringValue ?? "Unknown")
                 let userPhone = phone ?? ""
                 
-                // Modify this part to handle database errors better
+                // Check users table for soft-deleted records (future-proofing)
                 var existingProfile: [String: Any]? = nil
                 do {
                     existingProfile = try await getUserProfileFromDatabase(userId: userId)
+                    if let profile = existingProfile,
+                       let deletedAt = profile["deleted_at"] as? String, !deletedAt.isEmpty {
+                        throw NSError(
+                            domain: "OTPVerification",
+                            code: 403,
+                            userInfo: [NSLocalizedDescriptionKey: "This account has been deleted. Please use a different email or contact support."]
+                        )
+                    }
                 } catch {
                     print("Error fetching user profile: \(error.localizedDescription). Creating new profile.")
                     // Continue with nil existingProfile
@@ -243,6 +271,14 @@ extension SupabaseManager {
                             domain: "OTPVerification",
                             code: 1002,
                             userInfo: [NSLocalizedDescriptionKey: "Invalid verification code. Please check and try again."]
+                        )))
+                    }
+                } else if error.localizedDescription.contains("User not allowed") {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(
+                            domain: "OTPVerification",
+                            code: 1003,
+                            userInfo: [NSLocalizedDescriptionKey: "User not allowed to sign in. The account may be disabled or requires email confirmation."]
                         )))
                     }
                 } else {

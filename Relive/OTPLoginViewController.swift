@@ -42,12 +42,15 @@
            setupButtons()
            setupObservers()
            
+           
            // Prefill email if provided
            if let email = prefillEmail ?? self.email {
                processEmail(email)
            }
        }
-       
+       @objc private func dismissKeyboard() {
+           view.endEditing(true)
+       }
        // MARK: - Setup Methods
        private func setupUI() {
            titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
@@ -62,7 +65,8 @@
            // Hide phone code field since it's not needed for email
            phoneCodeTextField.isHidden = true
            phoneNumberContainerView.subviews.first?.layoutIfNeeded()
-           
+           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+               view.addGestureRecognizer(tapGesture)
            // Center the phoneNumberTextField programmatically
            centerEmailTextField()
        }
@@ -182,7 +186,7 @@
                showAlert(title: "Invalid OTP", message: "Please enter a 6-digit verification code.")
                return
            }
-           
+           otpTextField.resignFirstResponder()
            print("Verifying OTP: \(enteredOTP) for email: \(currentEmail)")
            
            // Use Supabase to verify OTP
@@ -397,6 +401,24 @@
            
            let isOTPValid = otpTextField.text?.count == 6
            updateButtonAppearance(verifyOTPButton, isEnabled: isOTPValid)
+           
+           if textField == otpTextField && isOTPValid {
+               // Forcefully dismiss the keyboard first
+               textField.resignFirstResponder()
+               
+               // Ensure the keyboard is dismissed before proceeding
+               DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                   // Double-check if the keyboard is still active and force dismissal
+                   if textField.isFirstResponder {
+                       self.view.endEditing(true)
+                   }
+                   
+                   // Proceed with verification if the button is enabled
+                   if self.verifyOTPButton.isEnabled {
+                       self.verifyOTPTapped(self.verifyOTPButton)
+                   }
+               }
+           }
        }
        
        // MARK: - Loading Indicator

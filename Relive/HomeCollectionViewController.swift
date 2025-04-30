@@ -511,15 +511,15 @@ class HomeCollectionViewController: UICollectionViewController, AlertViewCellDel
 //            subtitleLabel.textAlignment = .center
 //            subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
             
-            let refreshButton = UIButton(type: .system)
-            refreshButton.setTitle("Refresh", for: .normal)
-            refreshButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-            refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
-            refreshButton.translatesAutoresizingMaskIntoConstraints = false
+//            let refreshButton = UIButton(type: .system)
+//            refreshButton.setTitle("Refresh", for: .normal)
+//            refreshButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+//            refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
+//            refreshButton.translatesAutoresizingMaskIntoConstraints = false
             
 //            emptyStateView.addSubview(messageLabel)
 //            emptyStateView.addSubview(subtitleLabel)
-            emptyStateView.addSubview(refreshButton)
+//            emptyStateView.addSubview(refreshButton)
             
             view.addSubview(emptyStateView)
             

@@ -26,6 +26,14 @@ class VerificationViewController: UIViewController {
         createOTPTextFields()
         updateButtonState()
         addKeyboardObservers()
+        
+        // Add tap gesture to dismiss keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissKeyboard() {
+        otpTextFields.forEach { $0.resignFirstResponder() }
     }
     
     private func retrieveData() {
@@ -166,8 +174,13 @@ class VerificationViewController: UIViewController {
     private func adjustContinueButtonPosition() {
         let verticalSpacing: CGFloat = 50
         if let containerView = otpTextFields.first?.superview {
+            verifyButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                verifyButton.topAnchor.constraint(greaterThanOrEqualTo: containerView.bottomAnchor, constant: verticalSpacing)
+                verifyButton.topAnchor.constraint(greaterThanOrEqualTo: containerView.bottomAnchor, constant: verticalSpacing),
+                verifyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                verifyButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+                verifyButton.heightAnchor.constraint(equalToConstant: 44),
+                verifyButton.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
             ])
         }
     }
@@ -225,18 +238,18 @@ class VerificationViewController: UIViewController {
                 textField.heightAnchor.constraint(equalToConstant: boxSize)
             ])
             
-            textField.backgroundColor = .white // Consider using a dynamic color for background
+            textField.backgroundColor = .systemBackground
             textField.layer.cornerRadius = 8
             textField.layer.borderWidth = 1.0
-            textField.layer.borderColor = UIColor.lightGray.cgColor
+            textField.layer.borderColor = UIColor.systemGray.cgColor
             textField.textAlignment = .center
             textField.font = UIFont.systemFont(ofSize: 18, weight: .medium)
             textField.keyboardType = .numberPad
             textField.textContentType = .oneTimeCode
             textField.delegate = self
             textField.tag = i + 1
+            textField.textColor = .label
             
-            // Set text color to adapt to light/dark mode
             textField.textColor = UIColor { traitCollection in
                 return traitCollection.userInterfaceStyle == .dark ? .white : .black
             }
@@ -277,8 +290,12 @@ class VerificationViewController: UIViewController {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            let bottomInset = view.safeAreaInsets.bottom
+            let adjustment = keyboardHeight - bottomInset + 20
+            
             if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height / 5
+                self.view.frame.origin.y -= adjustment
             }
         }
     }
@@ -302,11 +319,22 @@ class VerificationViewController: UIViewController {
                 otpTextFields[tag].becomeFirstResponder()
             } else {
                 textField.resignFirstResponder()
+                // Dismiss keyboard when the last field is filled
+                dismissKeyboard()
             }
         }
         
         updateOriginalTextField()
         updateButtonState()
+        
+        // Add this section to automatically dismiss keyboard when all fields are filled
+        let allFieldsFilled = otpTextFields.allSatisfy { textField in
+            return !(textField.text?.isEmpty ?? true)
+        }
+        
+        if allFieldsFilled {
+            dismissKeyboard()
+        }
     }
     
     private func updateOriginalTextField() {
@@ -335,6 +363,9 @@ class VerificationViewController: UIViewController {
     }
     
     @IBAction func Button(_ sender: UIButton) {
+        otpTextFields.forEach { $0.resignFirstResponder() }
+        dismissKeyboard()
+        
         guard let email = email, !email.isEmpty else {
             print("Email is missing or empty when verifying")
             showAlert(title: "Error", message: "Email address is missing.")
@@ -717,8 +748,9 @@ extension VerificationViewController: UITextFieldDelegate {
             }
         }
         
-        if otpString.count == otpTextFields.count {
-            otpTextFields.last?.resignFirstResponder()
+        // Always dismiss keyboard if the pasted text completes the OTP
+        if otpString.count >= otpTextFields.count {
+            dismissKeyboard()
         } else {
             if otpString.count < otpTextFields.count {
                 otpTextFields[otpString.count].becomeFirstResponder()

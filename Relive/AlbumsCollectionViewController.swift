@@ -419,8 +419,12 @@ class AlbumsCollectionViewController: UICollectionViewController, AlbumsAlertVie
         var albumSharedWith: [String] = []
 
         // Get album cover image
+        var coverImage: UIImage? // New variable for configure
         if let ids = album.imagesIds, !ids.isEmpty {
-            albumImage = ImageDataModel.shared.getImage(byId: ids.first!)
+            if let albumImageData = ImageDataModel.shared.getImage(byId: ids.first!)?.image {
+                albumImage = ImageDataModel.shared.getImage(byId: ids.first!) // Keep for existing logic
+                coverImage = UIImage(data: albumImageData) // Set UIImage for configure
+            }
         }
 
         // Get users the album is shared with
@@ -457,6 +461,15 @@ class AlbumsCollectionViewController: UICollectionViewController, AlbumsAlertVie
                 cell.p2Image.isHidden = false
             }
         }
+
+        // Get users the album is shared with for configure
+        var sharedUsers: [User] = []
+        if let sharedIds = album.sharedWithUserIds {
+            sharedUsers = sharedIds.compactMap { UserDataModel.shared.getUser(byId: $0) }
+        }
+
+        // Fix: Pass coverImage (UIImage?) instead of albumImage (ImageData?)
+        cell.configure(with: coverImage, titleText: album.albumName, sharedUsers: sharedUsers)
 
         cell.delegate = self
         return cell
@@ -511,10 +524,10 @@ class AlbumsCollectionViewController: UICollectionViewController, AlbumsAlertVie
     private func showActionSheet(for album: SharedAlbum) {
         let actionSheet = UIAlertController(title: "Album Options", message: nil, preferredStyle: .actionSheet)
         
-        // Edit action
-        actionSheet.addAction(UIAlertAction(title: "Edit Album", style: .default) { [weak self] _ in
-            self?.showEditAlbumAlert(for: album)
-        })
+//        // Edit action
+//        actionSheet.addAction(UIAlertAction(title: "Edit Album", style: .default) { [weak self] _ in
+//            self?.showEditAlbumAlert(for: album)
+//        })
         
         // Delete action
         actionSheet.addAction(UIAlertAction(title: "Delete Album", style: .destructive) { [weak self] _ in
